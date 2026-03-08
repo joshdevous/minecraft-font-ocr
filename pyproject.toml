@@ -21,3 +21,6 @@ dev = [
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["minecraft_ocr*"]
+
+[tool.setuptools.package-data]
+minecraft_ocr = ["data/*.png"]

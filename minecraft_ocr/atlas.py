@@ -21,6 +21,7 @@ import io
 import json
 import zipfile
 from dataclasses import dataclass
+from importlib import resources
 from pathlib import Path
 
 import numpy as np
@@ -92,6 +93,19 @@ class FontAtlas:
     # ------------------------------------------------------------------
     # Constructors
     # ------------------------------------------------------------------
+
+    @classmethod
+    def from_builtin(cls) -> FontAtlas:
+        """Load the bundled vanilla atlas (Minecraft 1.21.4, extracted from the JAR).
+
+        This is the default way to use the library — no Minecraft installation
+        or JAR file required.
+        """
+        pkg = resources.files("minecraft_ocr.data")
+        data = (pkg / "ascii.png").read_bytes()
+        img = Image.open(io.BytesIO(data))
+        img.load()
+        return cls(img, _default_char_map())
 
     @classmethod
     def from_jar(cls, jar_path: str | Path) -> FontAtlas:
